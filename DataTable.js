@@ -58,20 +58,24 @@ class DataTable {
       placeholder: "Search...",
       debounceTime: 300,
       noResultsMessage: "No matching records found",
+      excludeActionColumns: true,
     },
     sorting: {
       enabled: true,
       multiColumn: false,
+      excludeActionColumns: true,
     },
     filtering: {
       enabled: true,
+      excludeActionColumns: true,
     },
     display: {
-      nullValue: "N/A", // New default value for null/undefined fields
+      nullValue: "N/A",
     },
     export: {
       enabled: true,
       formats: ["csv", "copy", "pdf"],
+      excludeActionColumns: true,
     },
     classes: {
       container:
@@ -468,7 +472,17 @@ class DataTable {
         </svg>
         PDF
       `;
-      pdfBtn.addEventListener("click", () => this.exportPDF());
+      pdfBtn.addEventListener("click", async () => {
+        pdfBtn.disabled = true;
+        try {
+          await this.exportPDF();
+        } catch (error) {
+          console.error('Failed to export PDF:', error);
+          alert('Failed to export PDF. Please try again.');
+        } finally {
+          pdfBtn.disabled = false;
+        }
+      });
       exportBar.appendChild(pdfBtn);
     }
 
@@ -669,8 +683,12 @@ class DataTable {
 
     // Apply search if it exists
     if (this.state.searchQuery) {
+      const searchableColumns = this.config.search.excludeActionColumns 
+        ? this._getNonActionColumns() 
+        : this.config.columns;
+
       this.state.filteredData = this.state.filteredData.filter(row => {
-        return this.config.columns.some(column => {
+        return searchableColumns.some(column => {
           const value = this._getNestedValue(row, column.field);
           return value && String(value).toLowerCase().includes(this.state.searchQuery.toLowerCase());
         });
@@ -680,7 +698,10 @@ class DataTable {
 
   _sort(columnIndex, direction) {
     const column = this.config.columns[columnIndex];
-    if (column.sortable === false) return;
+    if (column.sortable === false || 
+        (this.config.sorting.excludeActionColumns && column.actionable)) {
+      return;
+    }
 
     // Reset all sort indicators
     const headers = this.table.querySelectorAll('th');
@@ -809,6 +830,17 @@ class DataTable {
     </svg>`;
   }
 
+  _getExportableColumns() {
+    return this.config.columns.filter(column => 
+      column.exportable !== false && 
+      (!this.config.export.excludeActionColumns || column.actionable !== true)
+    );
+  }
+
+  _getNonActionColumns() {
+    return this.config.columns.filter(column => !column.actionable);
+  }
+
   // Public methods
   refresh() {
     this._filterData();
@@ -825,9 +857,10 @@ class DataTable {
 
   copyToClipboard() {
     const data = this.state.filteredData;
-    const headers = this.config.columns.map((col) => col.name);
+    const exportableColumns = this._getExportableColumns();
+    const headers = exportableColumns.map((col) => col.name);
     const rows = data.map((row) =>
-      this.config.columns.map((col) => this._getNestedValue(row, col.field))
+      exportableColumns.map((col) => this._getNestedValue(row, col.field))
     );
 
     const text = [headers, ...rows].map((row) => row.join("\t")).join("\n");
@@ -840,9 +873,10 @@ class DataTable {
 
   exportCSV(filename = "export.csv") {
     const data = this.state.filteredData;
-    const headers = this.config.columns.map((col) => `"${col.name}"`);
+    const exportableColumns = this._getExportableColumns();
+    const headers = exportableColumns.map((col) => `"${col.name}"`);
     const rows = data.map((row) =>
-      this.config.columns.map((col) => {
+      exportableColumns.map((col) => {
         const value = this._getNestedValue(row, col.field);
         return `"${String(value).replace(/"/g, '""')}"`;
       })
@@ -867,11 +901,21 @@ class DataTable {
     }
   }
 
-  exportPDF(filename = 'table-export.pdf') {
+  async exportPDF(filename = 'table-export.pdf') {
+    // Ensure dependencies are loaded
+    try {
+      await DataTable.loadDependencies();
+    } catch (error) {
+      console.error('Failed to load PDF export dependencies:', error);
+      alert('Failed to load PDF export dependencies. Please try again.');
+      return;
+    }
+
     // Get table data
-    const headers = this.config.columns.map(col => col.name);
+    const exportableColumns = this._getExportableColumns();
+    const headers = exportableColumns.map(col => col.name);
     const rows = this.state.filteredData.map(row =>
-      this.config.columns.map(col => this._getNestedValue(row, col.field))
+      exportableColumns.map(col => this._getNestedValue(row, col.field))
     );
 
     // Create PDF document
@@ -974,6 +1018,11 @@ class DataTable {
 
   // Add new methods for filtering
   _showFilterPanel(event, column, columnIndex) {
+    // Don't show filter panel for action columns if excluded
+    if (this.config.filtering.excludeActionColumns && column.actionable) {
+      return;
+    }
+
     event.stopPropagation();
 
     // Remove any existing filter panels
