@@ -2,56 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Users DataTable Demo</title>
   <link href="styles.css" rel="stylesheet">
-  <script src="DataTable.js"></script>
-</head>
-<body class="container mx-auto py-10">
-  <div id="myDataTable"></div>
-  
-  <script>
-    // Fetch data from the API
+<!--  <script src="https://cdn.jsdelivr.net/gh/alextassy24/data-table@main/DataTable.js"></script>-->
+  <script type="module">
+    import { DataTable } from './DataTable.js';
+
     async function initializeTable() {
       try {
-        // Load dependencies first
         await DataTable.loadDependencies();
 
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        
-        // Column definitions matching the API data structure
+
         const columns = [
-          { name: "ID", field: "id", sortable: true },
-          { name: "Name", field: "name", sortable: true },
-          { name: "Username", field: "username", sortable: true },
-          { name: "Email", field: "email", sortable: true },
-          { name: "City", field: "address.city", sortable: true },
-          { name: "Phone", field: "phone", sortable: true },
-          { name: "Website", field: "website", sortable: true },
-          { name: "Company", field: "company.name", sortable: true }
+          { name: "ID", field: "id", sortable: true, filterable: true },
+          { name: "Name", field: "name", sortable: true, filterable: true },
+          { name: "Username", field: "username", sortable: true, filterable: true },
+          { name: "Email", field: "email", sortable: true, filterable: true },
+          { name: "City", field: "address.city", sortable: true, filterable: true },
+          { name: "Phone", field: "phone", sortable: true, filterable: true },
+          { name: "Website", field: "website", sortable: true, filterable: true },
+          { name: "Company", field: "company.name", sortable: true, filterable: true }
         ];
 
-        // Initialize the DataTable
         const dt = new DataTable("#myDataTable", {
           data: data,
           columns: columns,
           pagination: {
-            pageSize: 5
+            pageSize: 5, // Initial page size
+            // pageSizes: [5, 10, 25, "All"] // Default, can be overridden
           },
-          classes: {
-            table: 'min-w-full bg-white shadow-md rounded-lg p-5',
-            th: 'px-6 py-3 font-semibold text-xs uppercase tracking-wider text-blue-700 cursor-pointer',
-            td: 'px-6 py-4 text-sm text-gray-600'
-          }
+          // classes: { // Example of overriding a specific class
+          //   table: 'min-w-full bg-gray-100 shadow-xl rounded-lg p-6',
+          // }
         });
+
+        window.myDt = dt; // For debugging purposes
+
       } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('myDataTable').innerHTML = 'Error initializing table';
+        console.error('Error initializing table:', error);
+        const errorContainer = document.getElementById('myDataTable') || document.body;
+        errorContainer.innerHTML = `<div class="p-4 text-red-700 bg-red-100 border border-red-400 rounded">Error initializing table: ${error.message}</div>`;
       }
     }
-    // Call the initialization function
-    initializeTable();
+
+    // Ensure the DOM is ready before trying to initialize the table
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeTable);
+    } else {
+      initializeTable();
+    }
   </script>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8"> <div class="container mx-auto">
+  <h1 class="text-2xl sm:text-3xl font-bold text-gray-700 mb-6 text-center">User Data Table</h1>
+  <div id="myDataTable" class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-10 text-center text-gray-500">Loading table...</div>
+  </div>
+</div>
 </body>
 </html>
-

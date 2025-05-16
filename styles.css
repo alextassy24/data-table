@@ -1,258 +1,268 @@
 /* DataTable default styles */
 .dt-container {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    --dt-primary: #3b82f6;
-    --dt-primary-hover: #2563eb;
-    --dt-success: #22c55e;
-    --dt-success-hover: #16a34a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --dt-primary: #3b82f6; /* Used by dt-resize-handle, keep if needed */
+  --dt-primary-hover: #2563eb;
+  --dt-success: #22c55e;
+  --dt-success-hover: #16a34a;
+}
+
+/* Custom scrollbar for webkit browsers - Generally OK to keep */
+.dt-table-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dt-table-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.dt-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Responsive adjustments - Keep these as they are structural */
+@media (max-width: 640px) {
+  .dt-top-bar {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
-  /* Custom scrollbar for webkit browsers */
-  .dt-table-wrapper::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  
-  .dt-table-wrapper::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-  }
-  
-  .dt-table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #666;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .dt-top-bar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    
-    .dt-search {
-      width: 100%;
-      max-width: none;
-    }
-    
-    .dt-pagination {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    
-    .dt-pagination-button {
-      padding: 0.5rem !important;
-    }
-    
-    .dt-pagination-current {
-      order: -1;
-      width: 100%;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-  }
-  
-  /* Animation for sort icons */
-  .dt-sort-icon {
-    opacity: 0.3;
-    transition: opacity 0.2s ease-in-out;
-  }
-  
-  .dt-th-sortable:hover .dt-sort-icon {
-    opacity: 0.7;
-  }
-  
-  .dt-th-sorted .dt-sort-icon {
-    opacity: 1;
-  }
-  
-  /* Print styles */
-  @media print {
-    .dt-container {
-      box-shadow: none !important;
-    }
-    
-    .dt-top-section,
-    .dt-export-section,
-    .dt-bottom-section {
-      display: none !important;
-    }
-    
-    .dt-table {
-      width: 100% !important;
-      border-collapse: collapse !important;
-    }
-    
-    .dt-th,
-    .dt-td {
-      border: 1px solid #ddd !important;
-      padding: 8px !important;
-    }
-    
-    .dt-th {
-      background-color: #f8f9fa !important;
-      color: #000 !important;
-    }
-  }
-  
-  /* Focus styles for better accessibility */
-  .dt-search-input:focus,
-  .dt-page-size-select:focus,
-  .dt-pagination-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-  }
-  
-  /* Loading state */
-  .dt-loading {
-    position: relative;
-  }
-  
-  .dt-loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
+
+  /* If config.js searchWrapper handles width, this might be redundant */
+  /* .dt-search {
+    width: 100%;
+    max-width: none;
+  } */
+
+  .dt-pagination {
+    flex-wrap: wrap;
     justify-content: center;
-    font-size: 1.25rem;
-    color: var(--dt-primary);
+    gap: 0.5rem;
   }
-  
-  /* Empty state */
-  .dt-no-data {
-    padding: 3rem 1rem;
+
+  /* If config.js paginationButton handles padding, this might be redundant/conflicting */
+  /* .dt-pagination-button {
+    padding: 0.5rem !important; 
+  } */
+
+  .dt-pagination-current {
+    order: -1;
+    width: 100%;
     text-align: center;
-    color: #6b7280;
-    background: #f9fafb;
-    border-radius: 0.5rem;
-    margin: 1rem;
-  }
-  
-  .dt-no-data::before {
-    content: '📄';
-    display: block;
-    font-size: 2rem;
     margin-bottom: 0.5rem;
   }
-  
-  /* Hover effects */
-  .dt-tr:hover .dt-td {
-    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Animation for sort icons - Generally OK to keep if not handled by Tailwind transitions in config */
+.dt-sort-icon {
+  opacity: 0.3;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.dt-th-sortable:hover .dt-sort-icon {
+  opacity: 0.7;
+}
+
+.dt-th-sorted .dt-sort-icon {
+  opacity: 1;
+}
+
+/* Print styles - Generally OK to keep */
+@media print {
+  .dt-container {
+    box-shadow: none !important;
   }
-  
-  /* Status indicators */
-  .dt-status-active {
-    background-color: #dcfce7;
-    color: #166534;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
+
+  .dt-top-section,
+  .dt-export-section,
+  .dt-bottom-section {
+    display: none !important;
   }
-  
-  .dt-status-inactive {
-    background-color: #fee2e2;
-    color: #991b1b;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
+
+  .dt-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
   }
-  
-  /* Tooltip */
-  [data-tooltip] {
-    position: relative;
+
+  .dt-th,
+  .dt-td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
   }
-  
-  [data-tooltip]:hover::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.5rem;
-    background: #333;
-    color: white;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    white-space: nowrap;
-    z-index: 10;
-  }
-  
-  /* Selection styles */
-  .dt-table tbody tr.selected {
-    background-color: rgba(59, 130, 246, 0.1);
-  }
-  
-  /* Custom checkbox styles */
-  .dt-checkbox {
-    height: 1rem;
-    width: 1rem;
-    border-radius: 0.25rem;
-    border-color: #d1d5db;
-    color: #3b82f6;
-  }
-  
-  .dt-checkbox:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-  }
-  
-  /* Resizable columns */
+
   .dt-th {
-    position: relative;
+    background-color: #f8f9fa !important;
+    color: #000 !important;
   }
-  
-  .dt-resize-handle {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    cursor: col-resize;
-    user-select: none;
-    background: transparent;
-    transition: background-color 0.2s;
-  }
-  
-  .dt-resize-handle:hover,
-  .dt-resize-handle.active {
-    background: var(--dt-primary);
-  }
-  
-  /* Column visibility dropdown */
-  .dt-column-toggle {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dt-column-toggle-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 20;
-    min-width: 200px;
-    padding: 0.5rem;
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dt-column-toggle-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .dt-column-toggle-item:hover {
-    background-color: #f3f4f6;
-  }
+}
+
+/* Focus styles for better accessibility */
+/* THESE ARE LIKELY CONFLICTING WITH TAILWIND FOCUS CLASSES in config.js */
+/* Try commenting them out if your config.js defines focus rings (e.g., focus:ring-2) */
+/*
+.dt-search-input:focus,
+.dt-page-size-select:focus,
+.dt-pagination-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); 
+}
+*/
+
+/* Loading state - OK to keep if used */
+.dt-loading {
+  position: relative;
+}
+
+.dt-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--dt-primary);
+}
+
+/* Empty state - OK to keep if used */
+.dt-no-data {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #6b7280; /* Consider using Tailwind text-gray-500 if consistent */
+  background: #f9fafb; /* Consider using Tailwind bg-gray-50 if consistent */
+  border-radius: 0.5rem; /* Tailwind rounded-lg */
+  margin: 1rem; /* Tailwind m-4 */
+}
+
+.dt-no-data::before {
+  content: '📄';
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Hover effects - OK if not handled by Tailwind hover: variants in config.js */
+.dt-tr:hover .dt-td {
+  background-color: rgba(59, 130, 246, 0.05); /* Tailwind hover:bg-blue-50/10 or similar */
+}
+
+/* Status indicators - These are specific dt- classes, likely fine if you use them explicitly */
+.dt-status-active {
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.dt-status-inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Tooltip - OK to keep if used */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]:hover::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem;
+  background: #333;
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* Selection styles - OK if used */
+.dt-table tbody tr.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Custom checkbox styles */
+/* THESE ARE LIKELY CONFLICTING WITH TAILWIND STYLING FOR CHECKBOXES if you use Tailwind for them */
+/* Try commenting out if config.js dt-checkbox class uses Tailwind form plugin or custom Tailwind for checkboxes */
+/*
+.dt-checkbox {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.25rem;
+  border-color: #d1d5db;
+  color: #3b82f6; 
+}
+
+.dt-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+*/
+
+/* Resizable columns - OK to keep */
+.dt-th {
+  position: relative; /* Needed for resize handle absolute positioning */
+}
+
+.dt-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  user-select: none;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.dt-resize-handle:hover,
+.dt-resize-handle.active {
+  background: var(--dt-primary);
+}
+
+/* Column visibility dropdown - OK to keep if you implement this feature */
+/* Ensure these classes don't conflict with filter panel if structure is similar */
+.dt-column-toggle {
+  position: relative;
+  display: inline-block;
+}
+
+.dt-column-toggle-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 20; /* Higher than filter panel if they can overlap */
+  min-width: 200px;
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dt-column-toggle-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dt-column-toggle-item:hover {
+  background-color: #f3f4f6;
+}
