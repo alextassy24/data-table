@@ -20,10 +20,10 @@ class DataTable {
         const script = document.createElement('script');
         script.src = url;
         script.async = true;
-        
+
         script.onload = () => resolve();
         script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
-        
+
         document.head.appendChild(script);
       });
     };
@@ -31,13 +31,13 @@ class DataTable {
     try {
       // Load Tailwind first
       await loadScript(DataTable.DEPENDENCIES.tailwind);
-      
+
       // Load jsPDF
       await loadScript(DataTable.DEPENDENCIES.jspdf);
-      
+
       // Load autoTable plugin after jsPDF
       await loadScript(DataTable.DEPENDENCIES.autoTable);
-      
+
       return true;
     } catch (error) {
       console.error('Error loading dependencies:', error);
@@ -68,6 +68,7 @@ class DataTable {
     filtering: {
       enabled: true,
       excludeActionColumns: true,
+      defaultFilterable: true,
     },
     display: {
       nullValue: "N/A",
@@ -79,83 +80,83 @@ class DataTable {
     },
     classes: {
       container:
-        "dt-container max-w-full bg-white rounded-xl shadow-lg overflow-hidden",
+          "dt-container max-w-full bg-white rounded-xl shadow-lg overflow-hidden",
       topSection:
-        "dt-top p-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200",
+          "dt-top p-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200",
       topBar: "dt-top-bar flex flex-wrap items-center justify-between gap-4",
       searchWrapper: "dt-search flex-1 min-w-[200px] max-w-md relative",
       searchInput:
-        "dt-search-input w-full px-4 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 pl-10",
+          "dt-search-input w-full px-4 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 pl-10",
       searchIcon:
-        "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400",
+          "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400",
       pageSizeWrapper: "dt-page-size flex items-center gap-2",
       pageSizeLabel: "dt-page-size-label text-sm text-gray-600",
       pageSizeSelect:
-        "dt-page-size-select px-3 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+          "dt-page-size-select px-3 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
       pageSizeInput:
-        "dt-page-size-input w-20 px-3 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+          "dt-page-size-input w-20 px-3 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
       tableWrapper: "dt-table-wrapper overflow-x-auto",
       table: "dt-table min-w-full border-collapse",
       thead: "dt-thead bg-gradient-to-r from-gray-50 to-white sticky top-0 ",
       th: "dt-th px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b-2 border-gray-200 bg-white sticky top-0",
       thSortable:
-        "dt-th-sortable hover:bg-gray-50 transition-colors duration-200 cursor-pointer select-none",
+          "dt-th-sortable hover:bg-gray-50 transition-colors duration-200 cursor-pointer select-none",
       thSorted: "dt-th-sorted text-blue-600",
       sortButtons: "dt-sort-buttons ml-2 flex flex-col justify-center gap-0",
       sortButton:
-        "dt-sort-button h-3 w-3 text-gray-400 hover:text-gray-600 transition-colors duration-200",
+          "dt-sort-button h-3 w-3 text-gray-400 hover:text-gray-600 transition-colors duration-200",
       sortButtonActive:
-        "dt-sort-button-active !text-blue-600 bg-blue-50 rounded",
+          "dt-sort-button-active !text-blue-600 bg-blue-50 rounded",
       tbody: "dt-tbody bg-white divide-y divide-gray-100",
       tr: "dt-tr transition-colors duration-200 hover:bg-gray-50",
       td: "dt-td px-6 py-4 text-sm text-gray-600 whitespace-nowrap",
       noData: "dt-no-data text-center py-8 text-gray-500 bg-gray-50 italic",
       bottomSection:
-        "dt-bottom p-4 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200",
+          "dt-bottom p-4 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200",
       bottomBar:
-        "dt-bottom-bar flex flex-wrap items-center justify-between gap-4",
+          "dt-bottom-bar flex flex-wrap items-center justify-between gap-4",
       pagination: "dt-pagination flex items-center gap-2",
       paginationButton:
-        "dt-pagination-button px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-1",
+          "dt-pagination-button px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-1",
       paginationButtonEnabled:
-        "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:cursor-pointer",
+          "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:cursor-pointer",
       paginationButtonDisabled:
-        "bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed",
+          "bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed",
       paginationInfo: "dt-pagination-info text-sm text-gray-600",
       paginationCurrent:
-        "dt-pagination-current px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium",
+          "dt-pagination-current px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium",
       exportSection:
-        "dt-export p-4 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200",
+          "dt-export p-4 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200",
       exportBar: "dt-export-bar flex justify-end gap-2",
       exportButton:
-        "dt-export-button px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-2 hover:cursor-pointer",
+          "dt-export-button px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-2 hover:cursor-pointer",
       exportButtonCopy:
-        "bg-emerald-600 text-white hover:bg-emerald-700 hover:cursor-pointer",
+          "bg-emerald-600 text-white hover:bg-emerald-700 hover:cursor-pointer",
       exportButtonCsv:
-        "bg-blue-600 text-white hover:bg-blue-700 hover:cursor-pointer",
+          "bg-blue-600 text-white hover:bg-blue-700 hover:cursor-pointer",
       exportButtonPdf: "bg-red-600 text-white hover:bg-red-700 hover:cursor-pointer",
       filterButton:
-        "px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 shadow-sm",
+          "px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 shadow-sm",
       filterPanel:
-        "dt-filter-panel absolute mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-10 min-w-[200px]",
+          "dt-filter-panel absolute mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-10 min-w-[200px]",
       filterHeader:
-        "flex justify-between items-center px-4 py-2 border-b border-gray-200",
+          "flex justify-between items-center px-4 py-2 border-b border-gray-200",
       filterTitle: "font-semibold text-gray-700",
       filterReset:
-        "p-1.5 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors duration-200",
+          "p-1.5 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors duration-200",
       filterOptionsContainer: "max-h-60 overflow-y-auto py-2",
       filterOption: "flex items-center px-4 py-2 hover:bg-gray-50",
       filterCheckbox:
-        "h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500",
+          "h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500",
       filterLabel: "ml-3 text-sm text-gray-700",
       filterActions:
-        "flex justify-center gap-3 px-4 py-3 border-t border-gray-200",
+          "flex justify-center gap-3 px-4 py-3 border-t border-gray-200",
       filterCancelButton:
-        "text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300",
+          "text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300",
       filterApplyButton:
-        "bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 hover:shadow-md",
+          "bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 hover:shadow-md",
       filterIcon:
-        "dt-filter-icon ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200",
+          "dt-filter-icon ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200",
       filterIconActive: "text-blue-500 hover:text-blue-600",
     },
   };
@@ -167,9 +168,9 @@ class DataTable {
     }
 
     this.container =
-      typeof container === "string"
-        ? document.querySelector(container)
-        : container;
+        typeof container === "string"
+            ? document.querySelector(container)
+            : container;
 
     if (!this.container) {
       throw new Error("Container element not found");
@@ -208,8 +209,8 @@ class DataTable {
     // Create top section
     if (this.config.search.enabled || this.config.pagination.enabled) {
       this.topSection = this._createElement(
-        "div",
-        this.config.classes.topSection
+          "div",
+          this.config.classes.topSection
       );
       this.topBar = this._createElement("div", this.config.classes.topBar);
 
@@ -227,8 +228,8 @@ class DataTable {
 
     // Create table wrapper and table
     this.tableWrapper = this._createElement(
-      "div",
-      this.config.classes.tableWrapper
+        "div",
+        this.config.classes.tableWrapper
     );
     this.table = this._createElement("table", this.config.classes.table);
     this._createHeader();
@@ -240,12 +241,12 @@ class DataTable {
     // Create bottom section
     if (this.config.pagination.enabled) {
       this.bottomSection = this._createElement(
-        "div",
-        this.config.classes.bottomSection
+          "div",
+          this.config.classes.bottomSection
       );
       this.bottomBar = this._createElement(
-        "div",
-        this.config.classes.bottomBar
+          "div",
+          this.config.classes.bottomBar
       );
       this._createPagination();
       this.bottomSection.appendChild(this.bottomBar);
@@ -260,21 +261,21 @@ class DataTable {
 
   _createSearch() {
     const searchWrapper = this._createElement(
-      "div",
-      this.config.classes.searchWrapper
+        "div",
+        this.config.classes.searchWrapper
     );
 
     // Add search icon
     const searchIcon = this._createElement(
-      "span",
-      this.config.classes.searchIcon
+        "span",
+        this.config.classes.searchIcon
     );
     searchIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
     searchWrapper.appendChild(searchIcon);
 
     this.searchInput = this._createElement(
-      "input",
-      this.config.classes.searchInput
+        "input",
+        this.config.classes.searchInput
     );
     this.searchInput.type = "text";
     this.searchInput.placeholder = this.config.search.placeholder;
@@ -284,19 +285,19 @@ class DataTable {
 
   _createPageSize() {
     const wrapper = this._createElement(
-      "div",
-      this.config.classes.pageSizeWrapper
+        "div",
+        this.config.classes.pageSizeWrapper
     );
     const label = this._createElement(
-      "label",
-      this.config.classes.pageSizeLabel
+        "label",
+        this.config.classes.pageSizeLabel
     );
     label.textContent = "Show:";
 
     if (this.config.pagination.allowCustomPageSize) {
       this.pageSizeInput = this._createElement(
-        "input",
-        this.config.classes.pageSizeInput
+          "input",
+          this.config.classes.pageSizeInput
       );
       this.pageSizeInput.type = "number";
       this.pageSizeInput.min = "1";
@@ -305,8 +306,8 @@ class DataTable {
       wrapper.appendChild(this.pageSizeInput);
     } else {
       this.pageSizeSelect = this._createElement(
-        "select",
-        this.config.classes.pageSizeSelect
+          "select",
+          this.config.classes.pageSizeSelect
       );
       this.config.pagination.pageSizes.forEach((size) => {
         const option = this._createElement("option");
@@ -328,10 +329,10 @@ class DataTable {
 
     this.config.columns.forEach((column, index) => {
       const th = this._createElement(
-        "th",
-        `${this.config.classes.th} ${
-          column.sortable !== false ? this.config.classes.thSortable : ""
-        }`
+          "th",
+          `${this.config.classes.th} ${
+              column.sortable !== false ? this.config.classes.thSortable : ""
+          }`
       );
 
       // Create header content wrapper
@@ -348,14 +349,14 @@ class DataTable {
 
         // Create sort buttons container
         const sortButtons = this._createElement(
-          "div",
-          this.config.classes.sortButtons
+            "div",
+            this.config.classes.sortButtons
         );
 
         // Create ascending sort button
         const ascButton = this._createElement(
-          "button",
-          this.config.classes.sortButton
+            "button",
+            this.config.classes.sortButton
         );
         ascButton.innerHTML = this._getSortIcon("asc");
         ascButton.dataset.direction = "asc";
@@ -367,8 +368,8 @@ class DataTable {
 
         // Create descending sort button
         const descButton = this._createElement(
-          "button",
-          this.config.classes.sortButton
+            "button",
+            this.config.classes.sortButton
         );
         descButton.innerHTML = this._getSortIcon("desc");
         descButton.dataset.direction = "desc";
@@ -383,15 +384,17 @@ class DataTable {
         headerContent.appendChild(sortButtons);
       }
 
-      // Add filter button if filtering is enabled
-      if (this.config.filtering.enabled) {
+      // Add filter button if filtering is enabled and allowed for this column
+      if (this.config.filtering.enabled &&
+          column.filterable !== false &&
+          (!this.config.filtering.excludeActionColumns || !column.actionable)) {
         const filterIcon = this._createElement(
-          "span",
-          this.config.classes.filterIcon
+            "span",
+            this.config.classes.filterIcon
         );
         filterIcon.innerHTML = this._getFilterIcon();
         filterIcon.addEventListener("click", (e) =>
-          this._showFilterPanel(e, column, index)
+            this._showFilterPanel(e, column, index)
         );
         headerContent.appendChild(filterIcon);
       }
@@ -406,12 +409,12 @@ class DataTable {
 
   _createPagination() {
     this.pagination = this._createElement(
-      "div",
-      this.config.classes.pagination
+        "div",
+        this.config.classes.pagination
     );
     this.paginationInfo = this._createElement(
-      "span",
-      this.config.classes.paginationInfo
+        "span",
+        this.config.classes.paginationInfo
     );
     this.bottomBar.appendChild(this.paginationInfo);
     this.bottomBar.appendChild(this.pagination);
@@ -419,15 +422,15 @@ class DataTable {
 
   _createExport() {
     this.exportSection = this._createElement(
-      "div",
-      this.config.classes.exportSection
+        "div",
+        this.config.classes.exportSection
     );
     const exportBar = this._createElement("div", this.config.classes.exportBar);
 
     if (this.config.export.formats.includes("copy")) {
       const copyBtn = this._createElement(
-        "button",
-        `${this.config.classes.exportButton} ${this.config.classes.exportButtonCopy}`
+          "button",
+          `${this.config.classes.exportButton} ${this.config.classes.exportButtonCopy}`
       );
       copyBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -442,8 +445,8 @@ class DataTable {
 
     if (this.config.export.formats.includes("csv")) {
       const csvBtn = this._createElement(
-        "button",
-        `${this.config.classes.exportButton} ${this.config.classes.exportButtonCsv}`
+          "button",
+          `${this.config.classes.exportButton} ${this.config.classes.exportButtonCsv}`
       );
       csvBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -459,8 +462,8 @@ class DataTable {
 
     if (this.config.export.formats.includes("pdf")) {
       const pdfBtn = this._createElement(
-        "button",
-        `${this.config.classes.exportButton} ${this.config.classes.exportButtonPdf}`
+          "button",
+          `${this.config.classes.exportButton} ${this.config.classes.exportButtonPdf}`
       );
       pdfBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -493,25 +496,25 @@ class DataTable {
   _bindEvents() {
     if (this.config.search.enabled) {
       this.searchInput.addEventListener(
-        "input",
-        this._debounce((e) => {
-          this.state.searchQuery = e.target.value.toLowerCase();
-          this.state.currentPage = 1;
-          this._filterData();
-          this._render();
-        }, this.config.search.debounceTime)
+          "input",
+          this._debounce((e) => {
+            this.state.searchQuery = e.target.value.toLowerCase();
+            this.state.currentPage = 1;
+            this._filterData();
+            this._render();
+          }, this.config.search.debounceTime)
       );
     }
 
     if (
-      this.config.pagination.enabled &&
-      !this.config.pagination.allowCustomPageSize
+        this.config.pagination.enabled &&
+        !this.config.pagination.allowCustomPageSize
     ) {
       this.pageSizeSelect.addEventListener("change", (e) => {
         this.state.pageSize =
-          e.target.value === "All"
-            ? this.state.filteredData.length
-            : parseInt(e.target.value);
+            e.target.value === "All"
+                ? this.state.filteredData.length
+                : parseInt(e.target.value);
         this.state.currentPage = 1;
         this._render();
       });
@@ -562,12 +565,12 @@ class DataTable {
 
   _getNestedValue(obj, path) {
     const value = path
-      .split(".")
-      .reduce(
-        (current, key) =>
-          current && current[key] !== undefined ? current[key] : undefined,
-        obj
-      );
+        .split(".")
+        .reduce(
+            (current, key) =>
+                current && current[key] !== undefined ? current[key] : undefined,
+            obj
+        );
     return value ?? this.config.display.nullValue;
   }
 
@@ -588,19 +591,19 @@ class DataTable {
 
     // Create page indicator
     const pageIndicator = this._createElement(
-      "span",
-      this.config.classes.paginationCurrent
+        "span",
+        this.config.classes.paginationCurrent
     );
     pageIndicator.textContent = `Page ${this.state.currentPage} of ${totalPages}`;
 
     const createButton = (label, icon, disabled, onClick) => {
       const btn = this._createElement(
-        "button",
-        `${this.config.classes.paginationButton} ${
-          disabled
-            ? this.config.classes.paginationButtonDisabled
-            : this.config.classes.paginationButtonEnabled
-        }`
+          "button",
+          `${this.config.classes.paginationButton} ${
+              disabled
+                  ? this.config.classes.paginationButtonDisabled
+                  : this.config.classes.paginationButtonEnabled
+          }`
       );
       btn.innerHTML = `${icon} ${label}`;
       btn.disabled = disabled;
@@ -612,28 +615,28 @@ class DataTable {
 
     // First page button
     this.pagination.appendChild(
-      createButton(
-        "First",
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>',
-        this.state.currentPage === 1,
-        () => {
-          this.state.currentPage = 1;
-          this._render();
-        }
-      )
+        createButton(
+            "First",
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>',
+            this.state.currentPage === 1,
+            () => {
+              this.state.currentPage = 1;
+              this._render();
+            }
+        )
     );
 
     // Previous page button
     this.pagination.appendChild(
-      createButton(
-        "Previous",
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
-        this.state.currentPage === 1,
-        () => {
-          this.state.currentPage--;
-          this._render();
-        }
-      )
+        createButton(
+            "Previous",
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+            this.state.currentPage === 1,
+            () => {
+              this.state.currentPage--;
+              this._render();
+            }
+        )
     );
 
     // Add page indicator
@@ -641,28 +644,28 @@ class DataTable {
 
     // Next page button
     this.pagination.appendChild(
-      createButton(
-        "Next",
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
-        this.state.currentPage === totalPages,
-        () => {
-          this.state.currentPage++;
-          this._render();
-        }
-      )
+        createButton(
+            "Next",
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+            this.state.currentPage === totalPages,
+            () => {
+              this.state.currentPage++;
+              this._render();
+            }
+        )
     );
 
     // Last page button
     this.pagination.appendChild(
-      createButton(
-        "Last",
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>',
-        this.state.currentPage === totalPages,
-        () => {
-          this.state.currentPage = totalPages;
-          this._render();
-        }
-      )
+        createButton(
+            "Last",
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>',
+            this.state.currentPage === totalPages,
+            () => {
+              this.state.currentPage = totalPages;
+              this._render();
+            }
+        )
     );
   }
 
@@ -683,9 +686,9 @@ class DataTable {
 
     // Apply search if it exists
     if (this.state.searchQuery) {
-      const searchableColumns = this.config.search.excludeActionColumns 
-        ? this._getNonActionColumns() 
-        : this.config.columns;
+      const searchableColumns = this.config.search.excludeActionColumns
+          ? this._getNonActionColumns()
+          : this.config.columns;
 
       this.state.filteredData = this.state.filteredData.filter(row => {
         return searchableColumns.some(column => {
@@ -698,7 +701,7 @@ class DataTable {
 
   _sort(columnIndex, direction) {
     const column = this.config.columns[columnIndex];
-    if (column.sortable === false || 
+    if (column.sortable === false ||
         (this.config.sorting.excludeActionColumns && column.actionable)) {
       return;
     }
@@ -717,7 +720,7 @@ class DataTable {
 
     // Set new sort state
     this.state.sortState = { index: columnIndex, direction };
-    
+
     // Add active classes
     const currentHeader = this.table.querySelector(`th[data-index="${columnIndex}"]`);
     if (currentHeader) {
@@ -788,8 +791,8 @@ class DataTable {
         target[key] = targetValue.concat(sourceValue);
       } else if (isObject(targetValue) && isObject(sourceValue)) {
         target[key] = this._mergeDeep(
-          Object.assign({}, targetValue),
-          sourceValue
+            Object.assign({}, targetValue),
+            sourceValue
         );
       } else {
         target[key] = sourceValue;
@@ -831,9 +834,9 @@ class DataTable {
   }
 
   _getExportableColumns() {
-    return this.config.columns.filter(column => 
-      column.exportable !== false && 
-      (!this.config.export.excludeActionColumns || column.actionable !== true)
+    return this.config.columns.filter(column =>
+        column.exportable !== false &&
+        (!this.config.export.excludeActionColumns || column.actionable !== true)
     );
   }
 
@@ -860,15 +863,15 @@ class DataTable {
     const exportableColumns = this._getExportableColumns();
     const headers = exportableColumns.map((col) => col.name);
     const rows = data.map((row) =>
-      exportableColumns.map((col) => this._getNestedValue(row, col.field))
+        exportableColumns.map((col) => this._getNestedValue(row, col.field))
     );
 
     const text = [headers, ...rows].map((row) => row.join("\t")).join("\n");
 
     navigator.clipboard
-      .writeText(text)
-      .then(() => alert("Table data copied to clipboard"))
-      .catch((err) => console.error("Failed to copy:", err));
+        .writeText(text)
+        .then(() => alert("Table data copied to clipboard"))
+        .catch((err) => console.error("Failed to copy:", err));
   }
 
   exportCSV(filename = "export.csv") {
@@ -876,10 +879,10 @@ class DataTable {
     const exportableColumns = this._getExportableColumns();
     const headers = exportableColumns.map((col) => `"${col.name}"`);
     const rows = data.map((row) =>
-      exportableColumns.map((col) => {
-        const value = this._getNestedValue(row, col.field);
-        return `"${String(value).replace(/"/g, '""')}"`;
-      })
+        exportableColumns.map((col) => {
+          const value = this._getNestedValue(row, col.field);
+          return `"${String(value).replace(/"/g, '""')}"`;
+        })
     );
 
     const csv = [headers, ...rows].join("\n");
@@ -915,7 +918,7 @@ class DataTable {
     const exportableColumns = this._getExportableColumns();
     const headers = exportableColumns.map(col => col.name);
     const rows = this.state.filteredData.map(row =>
-      exportableColumns.map(col => this._getNestedValue(row, col.field))
+        exportableColumns.map(col => this._getNestedValue(row, col.field))
     );
 
     // Create PDF document
@@ -934,8 +937,8 @@ class DataTable {
     // Calculate optimal column widths based on content and available space
     const columnWidths = headers.map((header, index) => {
       const maxContentLength = Math.max(
-        header.length,
-        ...rows.map(row => String(row[index]).length)
+          header.length,
+          ...rows.map(row => String(row[index]).length)
       );
       // Base width on character count but ensure minimum width
       return Math.max(40, maxContentLength * 5.5);
@@ -943,29 +946,29 @@ class DataTable {
 
     // Calculate total table width
     const totalWidth = columnWidths.reduce((sum, width) => sum + width, 0);
-    
+
     // Scale factor to fit table within page width if necessary
     const scaleFactor = Math.min(1, usableWidth / totalWidth);
-    
+
     // Apply scale factor to column widths
     const adjustedColumnWidths = columnWidths.map(width => width * scaleFactor);
 
     // PDF styling
     const style = {
-      headStyles: { 
-        fillColor: [248, 250, 252], 
-        textColor: [30, 41, 59], 
+      headStyles: {
+        fillColor: [248, 250, 252],
+        textColor: [30, 41, 59],
         fontSize: 9,
         fontStyle: 'bold',
         cellPadding: 4
       },
-      bodyStyles: { 
-        textColor: [51, 65, 85], 
+      bodyStyles: {
+        textColor: [51, 65, 85],
         fontSize: 8,
         cellPadding: 4
       },
-      alternateRowStyles: { 
-        fillColor: [248, 250, 252] 
+      alternateRowStyles: {
+        fillColor: [248, 250, 252]
       },
       styles: {
         overflow: 'linebreak',
@@ -993,7 +996,7 @@ class DataTable {
       bodyStyles: style.bodyStyles,
       alternateRowStyles: style.alternateRowStyles,
       columnStyles: adjustedColumnWidths.reduce((acc, width, index) => {
-        acc[index] = { 
+        acc[index] = {
           cellWidth: width,
           halign: typeof rows[0]?.[index] === 'number' ? 'right' : 'left' // Align numbers to right
         };
@@ -1005,9 +1008,9 @@ class DataTable {
         pdf.setFontSize(8);
         pdf.setTextColor(128, 128, 128);
         pdf.text(
-          `Page ${data.pageNumber} of ${data.pageCount}`,
-          data.settings.margin.left,
-          pageHeight - (margin / 2)
+            `Page ${data.pageNumber} of ${data.pageCount}`,
+            data.settings.margin.left,
+            pageHeight - (margin / 2)
         );
       }
     });
@@ -1032,11 +1035,11 @@ class DataTable {
     // Get unique values for this column
     const uniqueValues = [
       ...new Set(
-        this.state.data.map(
-          (row) =>
-            this._getNestedValue(row, column.field) ||
-            this.config.display.nullValue
-        )
+          this.state.data.map(
+              (row) =>
+                  this._getNestedValue(row, column.field) ||
+                  this.config.display.nullValue
+          )
       ),
     ].sort();
 
@@ -1052,12 +1055,12 @@ class DataTable {
 
     // Add filter header
     const filterHeader = this._createElement(
-      "div",
-      this.config.classes.filterHeader
+        "div",
+        this.config.classes.filterHeader
     );
     const filterTitle = this._createElement(
-      "span",
-      this.config.classes.filterTitle
+        "span",
+        this.config.classes.filterTitle
     );
     filterTitle.textContent = `Filter ${column.name}`;
 
@@ -1068,27 +1071,27 @@ class DataTable {
     resetButton.title = 'Reset filters';
     resetButton.addEventListener('click', (e) => {
       e.stopPropagation(); // Prevent event bubbling
-      
+
       // Reset filters for this column and update state
       if (this.state.filters) {
         delete this.state.filters[column.field];
-        
+
         // If no filters left, clean up the filters object
         if (Object.keys(this.state.filters).length === 0) {
           this.state.filters = {};
         }
       }
-      
+
       // Reset filtered data to original data
       this.state.filteredData = [...this.state.data];
-      
+
       // Apply remaining filters if any
       this._filterData();
-      
+
       // Update the UI
       this._updateFilterIcon(column.field);
       this._render();
-      
+
       // Close the panel
       panel.remove();
     });
@@ -1099,28 +1102,28 @@ class DataTable {
 
     // Add options container
     const optionsContainer = this._createElement(
-      "div",
-      this.config.classes.filterOptionsContainer
+        "div",
+        this.config.classes.filterOptionsContainer
     );
 
     // Add filter options
     uniqueValues.forEach((value) => {
       const option = this._createElement(
-        "div",
-        this.config.classes.filterOption
+          "div",
+          this.config.classes.filterOption
       );
 
       const checkbox = this._createElement(
-        "input",
-        this.config.classes.filterCheckbox
+          "input",
+          this.config.classes.filterCheckbox
       );
       checkbox.type = "checkbox";
       checkbox.checked =
-        this.state.filters?.[column.field]?.includes(value) || false;
+          this.state.filters?.[column.field]?.includes(value) || false;
 
       const label = this._createElement(
-        "label",
-        this.config.classes.filterLabel
+          "label",
+          this.config.classes.filterLabel
       );
       label.textContent = value;
 
@@ -1141,13 +1144,13 @@ class DataTable {
 
     // Add action buttons
     const actionContainer = this._createElement(
-      "div",
-      this.config.classes.filterActions
+        "div",
+        this.config.classes.filterActions
     );
 
     const cancelButton = this._createElement(
-      "button",
-      `${this.config.classes.filterButton} ${this.config.classes.filterCancelButton}`
+        "button",
+        `${this.config.classes.filterButton} ${this.config.classes.filterCancelButton}`
     );
     cancelButton.innerHTML = `
       <span class="inline-flex items-center">
@@ -1159,8 +1162,8 @@ class DataTable {
     cancelButton.addEventListener("click", () => panel.remove());
 
     const applyButton = this._createElement(
-      "button",
-      `${this.config.classes.filterButton} ${this.config.classes.filterApplyButton}`
+        "button",
+        `${this.config.classes.filterButton} ${this.config.classes.filterApplyButton}`
     );
     applyButton.innerHTML = `
       <span class="inline-flex items-center">
@@ -1212,7 +1215,7 @@ class DataTable {
 
   _updateFilterIcon(field) {
     const columnIndex = this.config.columns.findIndex(
-      (col) => col.field === field
+        (col) => col.field === field
     );
     if (columnIndex === -1) return;
 
@@ -1222,7 +1225,7 @@ class DataTable {
     if (filterIcon) {
       const hasActiveFilters = this.state.filters?.[field]?.length > 0;
       const activeClasses = this.config.classes.filterIconActive.split(' ');
-      
+
       if (hasActiveFilters) {
         filterIcon.classList.add(...activeClasses);
       } else {
